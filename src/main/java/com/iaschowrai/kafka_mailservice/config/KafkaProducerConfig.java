@@ -19,6 +19,8 @@ public class KafkaProducerConfig {
     @Value(value = "${spring.kafka.bootstrap-servers}")
     private String bootstrapAddress;
 
+
+    // Configures the producer factory for Kafka
     @Bean
     public ProducerFactory<Long, Long> producerFactory(){
         Map<String, Object> configProps = new HashMap<>();
@@ -28,6 +30,7 @@ public class KafkaProducerConfig {
         return new DefaultKafkaProducerFactory<>(configProps);
     }
 
+    // Provides a KafkaTemplate for sending messages
     @Bean
     public KafkaTemplate<Long, Long> kafkaTemplate(){
         return new KafkaTemplate<>(producerFactory());

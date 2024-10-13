@@ -31,12 +31,17 @@ public class EmailMessageKafkaScheduler {
     private final Semaphore semaphore = new Semaphore(1000);
 
 
-    @KafkaListener(topics = "emailMessageTopic" , groupId = "emailMessageTopic")
-    public void listenKafkaTopicConfig(Long messageId) throws InterruptedException{
+    // Listens to the Kafka topic for email message IDs
+    @KafkaListener(topics = "emailMessageTopic", groupId = "emailMessageTopic")
+    public void listenKafkaTopicConfig(Long messageId) throws InterruptedException {
+        // Retrieve email message entity from the database
+        EmailMessageEntity entity = repository.findById(messageId).orElseThrow(() -> {
+            log.error("EmailMessageEntity not found for ID: {}", messageId);
+            return new RuntimeException("Email message not found");
+        });
 
-        EmailMessageEntity entity = repository.findById(messageId).orElseThrow();
         EmailMessageDto dto = mapper.from(entity);
-        semaphore.acquire();
+        semaphore.acquire();// Acquire a permit from the semaphore
         executorService.submit(() -> {
             try {
                 // Send the email using the email sender service

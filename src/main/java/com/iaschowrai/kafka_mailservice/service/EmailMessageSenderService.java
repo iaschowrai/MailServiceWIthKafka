@@ -21,6 +21,7 @@ class EmailMessageSenderService {
 
     private final EmailProviderConfig emailProviderConfig;
 
+    // Sends an email using the provided email message DTO
     public void sendEmail(EmailMessageDto emailMessageDto) throws EmailMessageSendingException {
         try {
             Properties prop = new Properties();
@@ -33,17 +34,20 @@ class EmailMessageSenderService {
                 }
             });
 
+            // Create the email message
             Message message = new MimeMessage(session);
             message.setFrom(new InternetAddress(emailMessageDto.getFrom()));
             message.setRecipient(Message.RecipientType.TO, new InternetAddress(emailMessageDto.getTo()));
             message.setSubject(emailMessageDto.getSubject());
 
+            // Create the email content
             MimeBodyPart mimeBodyPart = new MimeBodyPart();
             mimeBodyPart.setContent(emailMessageDto.getBody(), "text/html; charset=utf-8");
 
             Multipart multipart = new MimeMultipart();
             multipart.addBodyPart(mimeBodyPart);
 
+            // Send the email
             message.setContent(multipart);
             Transport.send(message);
         }catch (MessagingException e){

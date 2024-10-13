@@ -22,6 +22,7 @@ public class KafkaConsumerConfig {
     @Value(value = "${spring.kafka.bootstrap-servers}")
     private String bootstrapAddress;
 
+    // Configures the consumer factory for Kafka
     @Bean
     public ConsumerFactory<Long, Long> consumerFactory(){
         Map<String, Object> consumerConfigProps = new HashMap<>();
@@ -33,6 +34,7 @@ public class KafkaConsumerConfig {
         return new DefaultKafkaConsumerFactory<>(consumerConfigProps);
     }
 
+    // Configures the listener container factory for concurrent message consumption
     @Bean
     public ConcurrentKafkaListenerContainerFactory<Long, Long> kafkaListenerContainerFactory(){
         ConcurrentKafkaListenerContainerFactory<Long, Long> factory = new ConcurrentKafkaListenerContainerFactory<>();

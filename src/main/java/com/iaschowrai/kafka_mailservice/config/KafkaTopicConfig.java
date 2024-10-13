@@ -16,6 +16,7 @@ public class KafkaTopicConfig {
     @Value(value = "${spring.kafka.bootstrap-servers}")
     private String bootstrapAddress;
 
+    // KafkaAdmin bean to manage Kafka topics
     @Bean
     public KafkaAdmin kafkaAdmin() {
         Map<String, Object> configs = new HashMap<>();
@@ -23,10 +24,9 @@ public class KafkaTopicConfig {
         return new KafkaAdmin(configs);
     }
 
+    // Defines a new topic named "emailMessageTopic" with 1 partition and replication factor of 1
     @Bean
     public NewTopic emailMessageTopic() {
         return new NewTopic("emailMessageTopic", 1, (short) 1);
     }
-
-
 }
