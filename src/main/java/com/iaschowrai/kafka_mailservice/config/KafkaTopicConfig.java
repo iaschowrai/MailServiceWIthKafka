@@ -26,7 +26,15 @@ public class KafkaTopicConfig {
 
     // Defines a new topic named "emailMessageTopic" with 1 partition and replication factor of 1
     @Bean
-    public NewTopic emailMessageTopic() {
-        return new NewTopic("emailMessageTopic", 1, (short) 1);
+    public NewTopic emailMessageTopicLow() {
+        return new NewTopic("emailMessageTopicLow", 1, (short) 1);
+    }
+    @Bean
+    public NewTopic emailMessageTopicMedium() {
+        return new NewTopic("emailMessageTopicMedium", 1, (short) 1);
+    }
+    @Bean
+    public NewTopic emailMessageTopicHigh() {
+        return new NewTopic("emailMessageTopicHigh", 1, (short) 1);
     }
 }

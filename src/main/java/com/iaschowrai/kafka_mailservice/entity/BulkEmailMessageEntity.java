@@ -5,12 +5,14 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 
 @Data
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
-public class EmailMessageEntity {
+public class BulkEmailMessageEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     private Long id;
@@ -18,15 +20,15 @@ public class EmailMessageEntity {
     @Column(name = "\"from\"")
     private String from;
 
+    @ElementCollection(targetClass = String.class, fetch = FetchType.EAGER)
+    @CollectionTable(name = "\"to\"",joinColumns = @JoinColumn(name = "bulk_email_message_id"))
     @Column(name = "\"to\"")
-    private String to;
+    private List<String> to;
     private String subject;
 
     @Column(columnDefinition = "TEXT")
     private String body;
 
-    @Enumerated(EnumType.STRING)
-    private EmailMessageStatus status;
 
     @Enumerated(EnumType.STRING)
     private EmailMessagePriorities priorities;
