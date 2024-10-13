@@ -23,9 +23,7 @@ public class EmailMessageService {
     public void create(EmailMessageDto emailMessageDto) {
         EmailMessageEntity entity = mapper.to(emailMessageDto);
         entity.setStatus(EmailMessageStatus.PENDING);
-
         repository.save(entity);
-
         kafkaTemplate.send("emailMessageTopic", entity.getId());
     }
 }
